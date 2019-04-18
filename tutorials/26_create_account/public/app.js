@@ -103,7 +103,7 @@ window.submitTx = async () => {
     const json = JSON.stringify([
         'follow',
         {
-            follower: 'bobo',
+            follower: username,
             following: 'alice',
             what: ['blog'], //null value for unfollow, 'blog' for follow
         },
@@ -113,7 +113,7 @@ window.submitTx = async () => {
         id: 'follow',
         json: json,
         required_auths: [],
-        required_posting_auths: ['bobo'],
+        required_posting_auths: [username],
     };
 
     //with variables assigned we can broadcast the operation
