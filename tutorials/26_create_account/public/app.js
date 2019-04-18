@@ -1,20 +1,20 @@
-const dsteem = require('dsteem');
-let opts = {};
+//const dsteem = require('dsteem');
+//let opts = {};
 //connect to production server
-opts.addressPrefix = 'STM';
-opts.chainId =
-    '0000000000000000000000000000000000000000000000000000000000000000';
+//opts.addressPrefix = 'STM';
+//opts.chainId =
+//    '0000000000000000000000000000000000000000000000000000000000000000';
 //connect to server which is connected to the network/production
-const client = new dsteem.Client('https://api.steemit.com');
+//const client = new dsteem.Client('http://127.0.0.1:8091/rpc');
 
-// const dsteem = require('dsteem');
-// //define network parameters
-// let opts = {};
-// opts.addressPrefix = 'STX';
-// opts.chainId =
-//     '79276aea5d4877d9a25892eaa01b0adf019d3e5cb12a97478df3298ccdd01673';
-// //connect to a steem node, testnet in this case
-// const client = new dsteem.Client('https://testnet.steem.vc', opts);
+ const dsteem = require('dsteem');
+ //define network parameters
+ let opts = {};
+ opts.addressPrefix = 'TST';
+ opts.chainId =
+     '18dcf0a285365fc58b71f18b3d3fec954aa0c141c44e4e5cb4cf777b9eab274e';
+ //connect to a steem node, testnet in this case
+ const client = new dsteem.Client('http://127.0.0.1:8091/rpc', opts);
 
 //submit Account search function from html input
 const max = 5;
@@ -94,6 +94,33 @@ window.submitTx = async () => {
             ).innerHTML = `<br/><p>Included in block: ${
                 result.block_num
             }</p><br/><br/>`;
+        },
+        function(error) {
+            console.error(error);
+        }
+    );
+
+    const json = JSON.stringify([
+        'follow',
+        {
+            follower: 'bobo',
+            following: 'alice',
+            what: ['blog'], //null value for unfollow, 'blog' for follow
+        },
+    ]);
+
+    const data = {
+        id: 'follow',
+        json: json,
+        required_auths: [],
+        required_posting_auths: ['bobo'],
+    };
+
+    //with variables assigned we can broadcast the operation
+
+    client.broadcast.json(data, postingKey).then(
+        function(result) {
+            console.log('user follow result: ', result);
         },
         function(error) {
             console.error(error);
