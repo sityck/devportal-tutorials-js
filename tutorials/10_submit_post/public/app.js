@@ -1,15 +1,24 @@
-import { Client, PrivateKey } from 'dsteem';
-import { Testnet as NetConfig } from '../../configuration'; //A Steem Testnet. Replace 'Testnet' with 'Mainnet' to connect to the main Steem blockchain.
+//import { Client, PrivateKey } from 'dsteem';
+//import { Testnet as NetConfig } from '../../configuration'; //A Steem Testnet. Replace 'Testnet' with 'Mainnet' to connect to the main Steem blockchain.
 
-let opts = { ...NetConfig.net };
+//let opts = { ...NetConfig.net };
 
 //connect to server which is connected to the network/testnet
-const client = new Client(NetConfig.url, opts);
+//const client = new Client(NetConfig.url, opts);
+
+ const dsteem = require('dsteem');
+ //define network parameters
+ let opts = {};
+ opts.addressPrefix = 'TST';
+ opts.chainId =
+     '18dcf0a285365fc58b71f18b3d3fec954aa0c141c44e4e5cb4cf777b9eab274e';
+ //connect to a steem node, testnet in this case
+ const client = new dsteem.Client('http://127.0.0.1:8091/rpc', opts);
 
 //submit post function
 window.submitPost = async () => {
     //get private key
-    const privateKey = PrivateKey.fromString(
+    const privateKey = dsteem.PrivateKey.fromString(
         document.getElementById('postingKey').value
     );
     //get account name
@@ -59,8 +68,3 @@ window.submitPost = async () => {
     );
 };
 
-window.onload = () => {
-    const account = NetConfig.accounts[0];
-    document.getElementById('username').value = account.address;
-    document.getElementById('postingKey').value = account.privPosting;
-};

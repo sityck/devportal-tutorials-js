@@ -101,7 +101,7 @@ window.submitTx = async () => {
     );
 
     const json = JSON.stringify([
-        'follow',
+        'message',
         {
             follower: username,
             following: 'alice',
@@ -110,7 +110,7 @@ window.submitTx = async () => {
     ]);
 
     const data = {
-        id: 'follow',
+        id: 'message',
         json: json,
         required_auths: [],
         required_posting_auths: [username],
@@ -121,6 +121,26 @@ window.submitTx = async () => {
     client.broadcast.json(data, postingKey).then(
         function(result) {
             console.log('user follow result: ', result);
+        },
+        function(error) {
+            console.error(error);
+        }
+    );
+
+    client.broadcast.comment({
+        author: username,
+        body: 'this is body',
+        json_metadata: '',
+        parent_author: '',
+        parent_permlink: 'test',
+        permlink: 'my-test',
+        title: 'default',
+        reference: 'default',
+        type: 'default',
+        anonymous: 'default',
+        }, postingKey).then(
+        function(result) {
+            console.log( result);
         },
         function(error) {
             console.error(error);
@@ -215,6 +235,36 @@ window.submitDisc = async () => {
             ).innerHTML = `<br/><p>Included in block: ${
                 result.block_num
             }</p><br/><br/>`;
+        },
+        function(error) {
+            console.error(error);
+        }
+    );
+};
+
+
+window.postcomment = async () => {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    
+    const postingKey = dsteem.PrivateKey.fromLogin(
+        username,
+        password,
+        'posting'
+    );
+    console.log(postingKey);
+
+    client.broadcast.comment({
+        author: username,
+        body: 'this is body',
+        json_metadata: '',
+        parent_author: '',
+        parent_permlink: 'test',
+        permlink: 'my-test',
+        title: 'default',
+        }, postingKey).then(
+        function(result) {
+            console.log( result);
         },
         function(error) {
             console.error(error);
