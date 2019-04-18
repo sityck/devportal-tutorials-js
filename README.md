@@ -1,3 +1,9 @@
+# 测试进展
+
+/tutorials/26_cree_account 项目测试通过，可以创建账户并发送custom_json交易
+
+
+
 # devportal-tutorials-js
 
 _Javascript Tutorials for the Developer Portal_
